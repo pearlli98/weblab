@@ -1,0 +1,43 @@
+#!/bin/bash
+
+echo "Paste in your MongoDB SRV address here (from Atlas)"
+read SRV
+
+ok=true
+
+if echo $SRV | grep -E "mongodb\+srv://.+:.+@.+mongodb.+" > /dev/null; then
+    echo "PASS: Valid SRV address"
+else
+    echo "FAIL: Invalid SRV address"
+    ok=false
+fi
+
+if git --version > /dev/null; then
+    echo "PASS: git installed"
+else
+    echo "FAIL: git not installed"
+    ok=false
+fi
+
+if node --version > /dev/null; then
+    echo "PASS: node installed"
+else
+    echo "FAIL: node not installed"
+    ok=false
+fi
+
+if node --version | grep -E "v(12|13)" > /dev/null; then
+    echo "PASS: node up to date"
+else
+    echo "FAIL: outdated node version. Please update to Node.js v12"
+    ok=false
+fi
+
+if npm --version > /dev/null; then
+    echo "PASS: npm installed"
+else
+    echo "FAIL: npm not installed"
+    ok=false
+fi
+
+$ok && echo "All tests passed! Your environment is all set up."
